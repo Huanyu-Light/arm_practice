@@ -15,6 +15,7 @@ CFLAGS += -g   -O0  -mabi=apcs-gnu -mfpu=neon -mfloat-abi=softfp  -fno-builtin \
 LD	= $(CROSS_COMPILE)ld
 CC	= $(CROSS_COMPILE)gcc
 OBJCOPY = $(CROSS_COMPILE)objcopy
+OBJDUMP = $(CROSS_COMPILE)objdump
 #============================================================================#
 OBJSss 	:= $(wildcard start/*.S) $(wildcard common/src/*.S) $(wildcard *.S)\
 		   $(wildcard start/*.c) $(wildcard common/src/*.c) 			   \
@@ -28,11 +29,12 @@ OBJS 	:= $(patsubst %.c,%.o,$(OBJSs))
 	$(CC) $(CFLAGS) -c -o  $@ $<
 all:clean $(OBJS)
 	$(LD)  $(OBJS) -T map.lds -o $(NAME).elf
-	$(OBJCOPY)  -O binary  $(NAME).elf $(NAME).bin 
+	$(OBJCOPY)  -O binary  $(NAME).elf $(NAME).bin
+	$(OBJDUMP) -D $(NAME).elf > $(NAME).dis
 #============================================================================#
 
 .PHONY: clean
 
 clean:
-	rm -rf $(OBJS) *.elf *.bin *.dis *.o
+	rm -rf $(OBJS) *.elf *.bin *.dis *.o common/src/*.o
 #============================================================================#

@@ -15,7 +15,7 @@ _software_interrupt:	.word  _software_interrupt
 _prefetch_abort:		.word  _prefetch_abort
 _data_abort:			.word  _data_abort
 _not_used:			.word  _not_used
-_irq:					.word  irq_handler
+_irq:				.word  irq_handler
 _fiq:				.word  _fiq
 
 
@@ -24,13 +24,13 @@ reset:
 	ldr	r0,=0x40008000
 	mcr	p15,0,r0,c12,c0,0		@ Vector Base Address Register
 
-		mrs  	r0,cpsr
-		bic		r0,r0,#0x1f
-		orr		r0,r0,#0xd3
-		msr		cpsr,r0         @ Enable svc mode of cpu
+	mrs  	r0,cpsr
+	bic		r0,r0,#0x1f
+	orr		r0,r0,#0xd3
+	msr		cpsr,r0         @ Enable svc mode of cpu
 
-    	mov	r0, #0xfffffff
-      	mcr	p15, 0, r0, c1, c0, 2  	@ Defines access permissions for each coprocessor
+	mov	r0, #0xfffffff
+  	mcr	p15, 0, r0, c1, c0, 2  	@ Defines access permissions for each coprocessor
 									@ Privileged and User mode access
 
 	/*
@@ -57,7 +57,7 @@ reset:
 	mcr	p15, 0, r0, c1, c0, 0
 
 /* LED Test Code */
-
+#if 0
 	ldr r0, =0x114001E0
 	ldr r1, [r0]
 	bic r1, r1, #0xf0000
@@ -73,6 +73,7 @@ reset:
 	ldr r1, [r0]
 	orr r1, r1, #0x10
 	str r1, [r0]
+#endif
 
 init_stack:
 		ldr		r0,stacktop         /*get stack top pointer*/
